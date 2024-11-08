@@ -27,15 +27,16 @@ def get_detail(request, id):
 @api_view(['POST'])
 def add_sale(request):
     product_id = request.data.get('product_id')
+    print(product_id)
     try:
         product = Product.objects.get(id=product_id)
     except Product.DoesNotExist:
         return Response({'error': 'Producto No encontrado'}, status=status.HTTP_404_NOT_FOUND)
-        
+
     sale = Sale(product=product)
     sale.save()
 
-    return Response({'success': True}, status=status.HTTP_201_CREATED)
+    return Response({'success': True, 'sale_id': sale.id}, status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
 def get_sales(request):
