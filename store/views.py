@@ -16,14 +16,13 @@ def search_product(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def get_detail(id):
+def get_detail(request, id):
     try:
-        product = Product.objects.get(id=id)
+        item = Product.objects.get(pk=id)
+        serializer = ProductSerializer(item)
+        return Response(serializer.data)
     except Product.DoesNotExist:
-        return Response({'error': 'Producto no encontrado'}, status=status.HTTP_404_NOT_FOUND)
-
-    serializer = ProductSerializer(product)
-    return Response(serializer.data)
+        return Response({"detail": "Producto No encontrado."}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['POST'])
 def add_sale(request):
